@@ -49,6 +49,6 @@ public class ProducerKafkaConfig {
 
     @Bean
     public NewTopic topic1() {
-        return new NewTopic("topic-1", 10, Short.valueOf("1"));
+        return new NewTopic("topic-1", 2, Short.valueOf("1"));
     }
 }
