@@ -2,6 +2,7 @@ package br.com.gusta.springkafka.producer.controller;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -20,7 +21,8 @@ public class TesteController {
 
     @GetMapping("/send")
     public ResponseEntity<Void> send() {
-        kafkaTemplate.send("topic-1", LocalDateTime.now() + " - " + OffsetDateTime.now());
+        IntStream.range(1, 50).boxed()
+                .forEach(i -> kafkaTemplate.send("topic-1", String.valueOf(OffsetDateTime.now())));
         return ResponseEntity.noContent().build();
     }
 
