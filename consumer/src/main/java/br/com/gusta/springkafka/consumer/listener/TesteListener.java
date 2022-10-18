@@ -1,5 +1,6 @@
 package br.com.gusta.springkafka.consumer.listener;
 
+import br.com.gusta.springkafka.consumer.model.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.listener.adapter.ConsumerRecordMetadata;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TesteListener {
 
-    @KafkaListener(topics = { "topic-1" }, groupId = "group-1")
+    @KafkaListener(topics = {"topic-1"}, groupId = "group-1")
     public void listen(String message,
                        ConsumerRecordMetadata metadata,
                        @Header(KafkaHeaders.RECEIVED_TOPIC) String topic
@@ -20,6 +21,11 @@ public class TesteListener {
                 topic,
                 metadata.partition(),
                 message);
+    }
+
+    @KafkaListener(topics = {"person-topic"}, groupId = "group-1", containerFactory = "personKafkaListenerContainerFactory")
+    public void listenPerson(Person person) {
+        log.info(person.toString());
     }
 
 }
