@@ -48,10 +48,7 @@ public class ConsumerKafkaConfig {
         configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
         configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        var jsonDeserializer = new JsonDeserializer<>(Person.class)
-                .trustedPackages("br.com.gusta.springkafka.producer.model")
-                .forKeys();
-        return new DefaultKafkaConsumerFactory<>(configs, new StringDeserializer(), jsonDeserializer);
+        return new DefaultKafkaConsumerFactory<>(configs, new StringDeserializer(), new JsonDeserializer<>(Person.class));
     }
 
     @Bean

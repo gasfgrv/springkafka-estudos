@@ -42,17 +42,17 @@ public class ProducerKafkaConfig {
 
     // Producer e template para trabalhar com objetos
     @Bean
-    public ProducerFactory<String, Object> jsonProducerFactory() {
+    public ProducerFactory<String, Serializable> jsonProducerFactory() {
         var configs = new HashMap<String, Object>();
         configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
-        configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         return new DefaultKafkaProducerFactory<>(configs, new StringSerializer(), new JsonSerializer<>());
     }
 
     @Bean
     public KafkaTemplate<String, Serializable> jsonKafkaTemplate() {
-        return new KafkaTemplate(jsonProducerFactory());
+        return new KafkaTemplate<>(jsonProducerFactory());
     }
 
     // Configuração de tópico via código -> O correto é que os tópicos sejam criados pela equipe de infra
