@@ -12,18 +12,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class TesteListener {
 
-    @KafkaListener(topics = {"topic-1"}, groupId = "group-1")
+    @KafkaListener(topics = {"topic-1"}, groupId = "group-1", concurrency = "2")
     public void listen(String message,
                        ConsumerRecordMetadata metadata,
                        @Header(KafkaHeaders.RECEIVED_TOPIC) String topic
     ) {
-        log.info("Topic: {} - Partition: {} - Message: {}",
+        log.info("Thread: {} - Topic: {} - Partition: {} - Message: {}",
+                Thread.currentThread().getId(),
                 topic,
                 metadata.partition(),
                 message);
     }
 
-    @KafkaListener(topics = {"person-topic"}, groupId = "group-1", containerFactory = "personKafkaListenerContainerFactory")
+    @CustomListener(groupId = "group-person")
     public void listenPerson(Person person) {
         log.info(person.toString());
     }

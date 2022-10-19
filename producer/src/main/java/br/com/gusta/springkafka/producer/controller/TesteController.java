@@ -25,7 +25,7 @@ public class TesteController {
 
     @GetMapping("/send")
     public ResponseEntity<Void> send() {
-        IntStream.range(1, 10).boxed()
+        IntStream.range(1, 50).boxed()
                 .forEach(i -> kafkaTemplate.send("topic-1", String.valueOf(OffsetDateTime.now())));
         return ResponseEntity.noContent().build();
     }
