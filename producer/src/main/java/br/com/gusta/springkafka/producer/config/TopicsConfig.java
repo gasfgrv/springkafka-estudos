@@ -18,7 +18,8 @@ public class TopicsConfig {
         this.kafkaProperties = kafkaProperties;
     }
 
-    // Configuração de tópico via código -> O correto é que os tópicos sejam criados pela equipe de infra
+    // Configuração de tópico via código -> O correto é que os tópicos sejam criados
+    // pela equipe de infra
     @Bean
     public KafkaAdmin kafkaAdmin() {
         var configs = new HashMap<String, Object>();
@@ -37,8 +38,10 @@ public class TopicsConfig {
                 TopicBuilder.name("person-topic")
                         .partitions(2)
                         .replicas(1)
-                        .build()
-        );
+                        .build(),
+                TopicBuilder.name("my-topic")
+                        .partitions(10)
+                        .build());
     }
 
 }

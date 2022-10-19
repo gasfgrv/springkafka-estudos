@@ -18,7 +18,7 @@ public class TesteController {
 
     @Autowired
     public TesteController(KafkaTemplate<String, String> kafkaTemplate,
-                           KafkaTemplate<String, Serializable> serializableKafkaTemplate) {
+            KafkaTemplate<String, Serializable> serializableKafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
         this.serializableKafkaTemplate = serializableKafkaTemplate;
     }
@@ -36,4 +36,10 @@ public class TesteController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/send2")
+    public ResponseEntity<Void> sendMyTopic() {
+        IntStream.range(1, 50).boxed()
+                .forEach(i -> kafkaTemplate.send("my-topic", "teste"));
+        return ResponseEntity.noContent().build();
+    }
 }
