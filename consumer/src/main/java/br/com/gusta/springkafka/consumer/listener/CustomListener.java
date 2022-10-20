@@ -12,7 +12,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 @Retention(RetentionPolicy.RUNTIME)
 @KafkaListener
 public @interface CustomListener {
-    
+
     @AliasFor(annotation = KafkaListener.class, attribute = "groupId")
     String groupId() default "";
 

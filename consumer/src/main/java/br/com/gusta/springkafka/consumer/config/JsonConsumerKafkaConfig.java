@@ -1,7 +1,7 @@
 package br.com.gusta.springkafka.consumer.config;
 
-import br.com.gusta.springkafka.consumer.model.Person;
 import java.util.HashMap;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +13,15 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
+import br.com.gusta.springkafka.consumer.model.Person;
+
 @Configuration
-public class jsonConsumerKafkaConfig {
+public class JsonConsumerKafkaConfig {
 
     private final KafkaProperties kafkaProperties;
 
     @Autowired
-    public jsonConsumerKafkaConfig(KafkaProperties kafkaProperties) {
+    public JsonConsumerKafkaConfig(KafkaProperties kafkaProperties) {
         this.kafkaProperties = kafkaProperties;
     }
 

@@ -1,13 +1,14 @@
 package br.com.gusta.springkafka.consumer.listener;
 
-import br.com.gusta.springkafka.consumer.model.Person;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.listener.adapter.ConsumerRecordMetadata;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
+
+import br.com.gusta.springkafka.consumer.model.Person;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component

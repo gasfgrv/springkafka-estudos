@@ -1,6 +1,7 @@
 package br.com.gusta.springkafka.consumer.config;
 
 import java.util.HashMap;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;

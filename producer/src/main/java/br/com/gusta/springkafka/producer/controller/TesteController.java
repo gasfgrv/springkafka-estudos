@@ -1,14 +1,16 @@
 package br.com.gusta.springkafka.producer.controller;
 
-import br.com.gusta.springkafka.producer.model.Person;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.stream.IntStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import br.com.gusta.springkafka.producer.model.Person;
 
 @RestController
 public class TesteController {

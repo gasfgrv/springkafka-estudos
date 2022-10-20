@@ -1,6 +1,7 @@
 package br.com.gusta.springkafka.producer.model;
 
 import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
