@@ -1,7 +1,6 @@
 package br.com.gusta.springkafka.consumer.listener;
 
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.listener.adapter.ConsumerRecordMetadata;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -14,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class TesteListener {
 
-    @KafkaListener(topics = { "topic-1" }, groupId = "group-1", concurrency = "2")
+    @KafkaListener(topics = { "topic-1" }, groupId = "group-1")
     public void listen(String message,
             ConsumerRecordMetadata metadata,
             @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
@@ -25,14 +24,11 @@ public class TesteListener {
                 message);
     }
 
-    @KafkaListener(topicPartitions = { @TopicPartition(topic = "my-topic", partitions = "0") }, groupId = "my-group")
-    public void listen2(String message, ConsumerRecordMetadata metadata) throws InterruptedException {
-        log.info("Message: {}", message);
-    }
-
-    @KafkaListener(topicPartitions = { @TopicPartition(topic = "my-topic", partitions = "1-9") }, groupId = "my-group")
-    public void listen3(String message, ConsumerRecordMetadata metadata) {
-        log.info("Partition: {} - Message: {}", metadata.partition(), message);
+    @KafkaListener(topics = "my-topic", groupId = "my-group")
+    public void listen2(String message) {
+        log.info("Thread: {} - Message: {}",
+                Thread.currentThread().getId(),
+                message);
     }
 
     @CustomListener(groupId = "group-person")

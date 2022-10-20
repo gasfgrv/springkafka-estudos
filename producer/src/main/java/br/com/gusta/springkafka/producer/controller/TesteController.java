@@ -2,7 +2,6 @@ package br.com.gusta.springkafka.producer.controller;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +26,7 @@ public class TesteController {
 
     @GetMapping("/send")
     public ResponseEntity<Void> send() {
-        IntStream.range(1, 50).boxed()
-                .forEach(i -> kafkaTemplate.send("topic-1", String.valueOf(OffsetDateTime.now())));
+        kafkaTemplate.send("topic-1", String.valueOf(OffsetDateTime.now()));
         return ResponseEntity.noContent().build();
     }
 
@@ -40,8 +38,7 @@ public class TesteController {
 
     @GetMapping("/send2")
     public ResponseEntity<Void> sendMyTopic() {
-        IntStream.range(1, 50).boxed()
-                .forEach(i -> kafkaTemplate.send("my-topic", "teste"));
+        kafkaTemplate.send("my-topic", "Lorem Ipsum");
         return ResponseEntity.noContent().build();
     }
 }

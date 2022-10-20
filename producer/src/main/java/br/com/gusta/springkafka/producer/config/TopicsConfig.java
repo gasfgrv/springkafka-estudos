@@ -2,47 +2,35 @@ package br.com.gusta.springkafka.producer.config;
 
 import java.util.HashMap;
 
-import org.apache.kafka.clients.admin.NewTopic;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.KafkaAdmin;
 
 public class TopicsConfig {
-
-    private final KafkaProperties kafkaProperties;
-
-    @Autowired
-    public TopicsConfig(KafkaProperties kafkaProperties) {
-        this.kafkaProperties = kafkaProperties;
-    }
-
     // Configuração de tópico via código -> O correto é que os tópicos sejam criados
     // pela equipe de infra
     @Bean
-    public KafkaAdmin kafkaAdmin() {
+    public KafkaAdmin admin() {
         var configs = new HashMap<String, Object>();
-        configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         return new KafkaAdmin(configs);
     }
 
-    @Bean
-    public NewTopic topic1() {
-        return new NewTopic("topic-1", 2, Short.parseShort("1"));
-    }
-
-    @Bean
     public KafkaAdmin.NewTopics topics() {
         return new KafkaAdmin.NewTopics(
+                TopicBuilder.name("topic-1")
+                        .partitions(2)
+                        .replicas(1)
+                        .build(),
                 TopicBuilder.name("person-topic")
                         .partitions(2)
                         .replicas(1)
                         .build(),
                 TopicBuilder.name("my-topic")
                         .partitions(10)
-                        .build());
+                        .replicas(1)
+                        .build()
+        );
     }
-
 }
