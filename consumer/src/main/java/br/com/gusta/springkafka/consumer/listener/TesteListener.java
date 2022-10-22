@@ -6,6 +6,7 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
+import br.com.gusta.springkafka.consumer.model.City;
 import br.com.gusta.springkafka.consumer.model.Person;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class TesteListener {
 
-    @KafkaListener(topics = { "topic-1" }, groupId = "group-1")
+    @KafkaListener(topics = {"topic-1"}, groupId = "group-1")
     public void listen(String message,
-            ConsumerRecordMetadata metadata,
-            @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
+                       ConsumerRecordMetadata metadata,
+                       @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         log.info("Thread: {} - Topic: {} - Partition: {} - Message: {}",
                 Thread.currentThread().getId(),
                 topic,
@@ -34,6 +35,13 @@ public class TesteListener {
     @CustomListener(groupId = "group-person")
     public void listenPerson(Person person) {
         log.info(person.toString());
+    }
+
+    @KafkaListener(topics = "city-topic",
+            groupId = "group-city",
+            containerFactory = "dynamicJsonKafkaListenerContainerFactory")
+    public void listenCity(City city) {
+        log.info(city.toString());
     }
 
 }

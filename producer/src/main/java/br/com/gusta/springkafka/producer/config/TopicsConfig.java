@@ -30,7 +30,10 @@ public class TopicsConfig {
                 TopicBuilder.name("my-topic")
                         .partitions(10)
                         .replicas(1)
-                        .build()
-        );
+                        .build(),
+                TopicBuilder.name("city-topic")
+                        .partitions(2)
+                        .replicas(1)
+                        .build());
     }
 }
