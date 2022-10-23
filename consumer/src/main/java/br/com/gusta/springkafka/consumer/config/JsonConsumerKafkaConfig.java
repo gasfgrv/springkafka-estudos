@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.RecordInterceptor;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import br.com.gusta.springkafka.consumer.model.Person;
@@ -42,7 +43,17 @@ public class JsonConsumerKafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, Person> personKafkaListenerContainerFactory() {
         var factory = new ConcurrentKafkaListenerContainerFactory<String, Person>();
         factory.setConsumerFactory(personConsumerFactory());
+        factory.setRecordInterceptor(adultInterceptor());
         return factory;
+    }
+
+    private RecordInterceptor<String, Person> adultInterceptor() {
+        return recordData -> {
+            var person = recordData.value();
+            return person.getAge() >= 18
+                    ? recordData
+                    : null;
+        };
     }
 
 }

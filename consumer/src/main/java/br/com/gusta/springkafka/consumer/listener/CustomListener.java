@@ -20,6 +20,6 @@ public @interface CustomListener {
     String[] topics() default "person-topic";
 
     @AliasFor(annotation = KafkaListener.class, attribute = "containerFactory")
-    String containerFactory() default "dynamicJsonKafkaListenerContainerFactory";
+    String containerFactory() default "personKafkaListenerContainerFactory";
 
 }
