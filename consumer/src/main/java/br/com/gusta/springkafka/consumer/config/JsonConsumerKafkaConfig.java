@@ -13,8 +13,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.CommonErrorHandler;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.listener.RecordInterceptor;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.util.backoff.FixedBackOff;
 
 import br.com.gusta.springkafka.consumer.model.Person;
 import lombok.extern.slf4j.Slf4j;
@@ -47,8 +50,13 @@ public class JsonConsumerKafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, Person> personKafkaListenerContainerFactory() {
         var factory = new ConcurrentKafkaListenerContainerFactory<String, Person>();
         factory.setConsumerFactory(personConsumerFactory());
-        factory.setRecordInterceptor(exampleInterceptor());
+        factory.setCommonErrorHandler(defaultErrorHandler());
+        // factory.setRecordInterceptor(exampleInterceptor());
         return factory;
+    }
+
+    private CommonErrorHandler defaultErrorHandler() {
+        return new DefaultErrorHandler(new FixedBackOff(1000l, 2));
     }
 
     private RecordInterceptor<String, Person> exampleInterceptor() {
@@ -64,7 +72,8 @@ public class JsonConsumerKafkaConfig {
             }
 
             @Override
-            public void failure(ConsumerRecord<String, Person> record, Exception exception, Consumer<String, Person> consumer) {
+            public void failure(ConsumerRecord<String, Person> record, Exception exception,
+                    Consumer<String, Person> consumer) {
                 log.info("Falha");
             }
         };
