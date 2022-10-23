@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
@@ -38,8 +39,11 @@ public class TesteListener {
     @KafkaListener(topics = "city-topic",
             groupId = "group-city",
             containerFactory = "dynamicJsonKafkaListenerContainerFactory")
-    public void listenCity(List<City> city) {
-        log.info(city.toString());
+    public void listenCity(List<Message<City>> messages) {
+        log.info("Messages: {}", messages);
+        var city = messages.get(0);
+        log.info("Payload: {}", city.getPayload());
+        log.info("Headers: {}", city.getHeaders());
     }
 
 }
