@@ -1,5 +1,7 @@
 package br.com.gusta.springkafka.consumer.listener;
 
+import java.util.List;
+
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.listener.adapter.ConsumerRecordMetadata;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -15,18 +17,15 @@ import lombok.extern.slf4j.Slf4j;
 public class TesteListener {
 
     @KafkaListener(topics = {"topic-1"}, groupId = "group-1")
-    public void listen(String message,
-                       ConsumerRecordMetadata metadata,
-                       @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
-        log.info("Thread: {} - Topic: {} - Partition: {} - Message: {}",
+    public void listen(String message[], @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
+        log.info("Thread: {} - Topic: {} - Message: {}",
                 Thread.currentThread().getId(),
                 topic,
-                metadata.partition(),
                 message);
     }
 
     @KafkaListener(topics = "my-topic", groupId = "my-group")
-    public void listen2(String message) {
+    public void listen2(String[] message) {
         log.info("Thread: {} - Message: {}",
                 Thread.currentThread().getId(),
                 message);
