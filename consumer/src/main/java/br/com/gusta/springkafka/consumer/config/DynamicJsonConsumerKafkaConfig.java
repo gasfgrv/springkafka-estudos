@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.support.converter.BatchMessagingMessageConverter;
 import org.springframework.kafka.support.converter.JsonMessageConverter;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,8 @@ public class DynamicJsonConsumerKafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, Object> dynamicJsonKafkaListenerContainerFactory() {
         var factory = new ConcurrentKafkaListenerContainerFactory<String, Object>();
         factory.setConsumerFactory(dynamicJsonConsumerFactory());
-        factory.setMessageConverter(new JsonMessageConverter());
+        factory.setMessageConverter(new BatchMessagingMessageConverter(new JsonMessageConverter()));
+        factory.setBatchListener(true);
         return factory;
     }
 
