@@ -2,7 +2,9 @@ package br.com.gusta.springkafka.consumer.config;
 
 import java.util.HashMap;
 
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -15,7 +17,9 @@ import org.springframework.kafka.listener.RecordInterceptor;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import br.com.gusta.springkafka.consumer.model.Person;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Configuration
 public class JsonConsumerKafkaConfig {
 
@@ -43,8 +47,27 @@ public class JsonConsumerKafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, Person> personKafkaListenerContainerFactory() {
         var factory = new ConcurrentKafkaListenerContainerFactory<String, Person>();
         factory.setConsumerFactory(personConsumerFactory());
-        factory.setRecordInterceptor(adultInterceptor());
+        factory.setRecordInterceptor(exampleInterceptor());
         return factory;
+    }
+
+    private RecordInterceptor<String, Person> exampleInterceptor() {
+        return new RecordInterceptor<>() {
+            @Override
+            public ConsumerRecord<String, Person> intercept(ConsumerRecord<String, Person> record) {
+                return record;
+            }
+
+            @Override
+            public void success(ConsumerRecord<String, Person> record, Consumer<String, Person> consumer) {
+                log.info("Sucesso");
+            }
+
+            @Override
+            public void failure(ConsumerRecord<String, Person> record, Exception exception, Consumer<String, Person> consumer) {
+                log.info("Falha");
+            }
+        };
     }
 
     private RecordInterceptor<String, Person> adultInterceptor() {
